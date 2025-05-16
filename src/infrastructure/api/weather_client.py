@@ -36,5 +36,5 @@ class WeatherAPIAgent:
 if __name__ == "__main__":
     agent = WeatherAPIAgent(api_key=os.getenv("WEATHER_API_KEY"))
     ciudad = "La Habana"
-    resultado = agent.get_weather(ciudad, country_code="CU")  # En Caso de querer otro pais cambiar el codigo, por ahora que 
+    resultado = agent.get_weather(ciudad, country_code="CU")  # En Caso de querer otro pais cambiar el codigo, por ahora solo es Cuba
     print(resultado)
