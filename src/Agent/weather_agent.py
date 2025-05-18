@@ -1,5 +1,6 @@
 import os
 import asyncio
+import requests
 from google.adk.agents import Agent
 from google.adk.models.lite_llm import LiteLlm # For multi-model support
 from google.adk.sessions import InMemorySessionService
@@ -21,6 +22,7 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: str
     WEATHER_API_KEY: str
     GOOGLE_GENAI_USE_VERTEXAI: bool = False
+    WEATHER_API_URL: str 
     MODEL_GEMINI_2_0_FLASH: str
     MODEL_GPT_4O: str
 
@@ -33,7 +35,7 @@ AGENT_MODEL = settings.MODEL_GEMINI_2_0_FLASH
 
 
 # @title Define the get_weather Tool
-def get_weather(city: str) -> dict:
+def get_weather(city: str, country_code='CU') -> dict:
     """Retrieves the current weather report for a specified city.
 
     Args:
@@ -46,23 +48,34 @@ def get_weather(city: str) -> dict:
               If 'error', includes an 'error_message' key.
     """
     print(f"--- Tool: get_weather called for city: {city} ---") # Log tool execution
-    city_normalized = city.lower().replace(" ", "") # Basic normalization
+    location = city.lower().replace(" ", "") # Basic normalization
 
-    # Implementar el requeest a la API de clima aquí 
-    mock_weather_db = {
-        "newyork": {"status": "success", "report": "The weather in New York is sunny with a temperature of 25°C."},
-        "london": {"status": "success", "report": "It's cloudy in London with a temperature of 15°C."},
-        "tokyo": {"status": "success", "report": "Tokyo is experiencing light rain and a temperature of 18°C."},
+    if country_code:
+            location += f",{country_code}"
+    params = {
+        "key": settings.WEATHER_API_KEY,
+        "q": location,
+        "lang": "es"  # Para respuesta en español
     }
-
-    if city_normalized in mock_weather_db:
-        return mock_weather_db[city_normalized]
+    response = requests.get(settings.WEATHER_API_URL, params=params)
+    if response.status_code == 200:
+        data = response.json()
+        weather = {
+            "ciudad": data["location"]["name"],
+            "pais": data["location"]["country"],
+            "temperatura_C": data["current"]["temp_c"],
+            "condicion": data["current"]["condition"]["text"],
+            "humedad": data["current"]["humidity"],
+            "viento_kph": data["current"]["wind_kph"]
+        }
+        return weather
     else:
-        return {"status": "error", "error_message": f"Sorry, I don't have weather information for '{city}'."}
-
+        return {"error": f"Error consultando el clima: {response.status_code} - {response.text}"}
+    
+    
 # Example tool usage (optional test)
-print(get_weather("New York"))
-print(get_weather("Paris"))
+print(get_weather("Habana"))
+print(get_weather("Matanzas"))
 
 
 weather_agent = Agent(
