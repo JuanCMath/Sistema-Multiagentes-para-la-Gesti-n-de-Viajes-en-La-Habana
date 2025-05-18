@@ -6,16 +6,15 @@ from google.adk.models.lite_llm import LiteLlm # For multi-model support
 from google.adk.sessions import InMemorySessionService
 from google.adk.runners import Runner
 from google.genai import types # For creating message Content/Parts
-
+from pydantic_settings import BaseSettings 
 import warnings
+
 # Ignore all warnings
 warnings.filterwarnings("ignore")
 
 import logging
 logging.basicConfig(level=logging.ERROR)
 
-from dotenv import load_dotenv
-from pydantic_settings import BaseSettings 
 
 class Settings(BaseSettings):
     GOOGLE_API_KEY: str 
@@ -72,8 +71,7 @@ def get_weather(city: str, country_code='CU') -> dict:
     else:
         return {"error": f"Error consultando el clima: {response.status_code} - {response.text}"}
     
-    
-# Example tool usage (optional test)
+
 print(get_weather("Habana"))
 print(get_weather("Matanzas"))
 
