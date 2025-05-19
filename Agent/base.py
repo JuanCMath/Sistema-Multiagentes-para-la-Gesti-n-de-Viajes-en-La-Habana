@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine, Column, Integer, String, Table, MetaData
 from sqlalchemy.orm import declarative_base, sessionmaker
-
+from pydantic import ValidationError
 from google.adk.agents import Agent
 from pydantic_settings import BaseSettings 
 
@@ -17,7 +17,14 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         
-settings = Settings()
+
+
+try:
+    settings = Settings()
+except ValidationError as e:
+    print("Detalles del error de validación en Settings:")
+    print(e.json())
+    raise
 
 # SQLAlchemy setup
 Base = declarative_base()
@@ -31,3 +38,8 @@ class Viaje(Base):
     destino = Column(String, nullable=False)
     fecha = Column(String, nullable=False)
     descripcion = Column(String, nullable=True)
+
+
+from pprint import pprint
+
+pprint(vars(settings))

@@ -3,11 +3,11 @@ from google.adk.agents import Agent
 from .base import settings
 
 # @title Define the get_weather Tool
-def get_weather(city: str, country_code='CU') -> dict:
+def get_weather(city: str) -> dict:
     """Retrieves the current weather report for a specified city.
 
     Args:
-        city (str): The name of the city (e.g., "New York", "London", "Tokyo").
+        city (str): The name of the city (e.g., "New York", "London", "Tokyo")
 
     Returns:
         dict: A dictionary containing the weather information.
@@ -18,8 +18,9 @@ def get_weather(city: str, country_code='CU') -> dict:
 
     location = city.lower().replace(" ", "") # Basic normalization
 
-    if country_code:
-            location += f",{country_code}"
+    country_code = "CU"  # Cuba's country code
+    
+    location += f",{country_code}"
     params = {
         "key": settings.WEATHER_API_KEY,
         "q": location,
@@ -47,12 +48,15 @@ weather_agent = Agent(
     description="Provides weather information for specific cities.",
     instruction="You are a helpful weather assistant. "
                 "When the user asks for the weather in a specific city, "
-                "use the 'get_weather' tool to find the information. "
+                "use the 'get_weather' tool to find the information. pass the city name to the tool. "
                 "If the tool returns an error, inform the user politely. "
-                "If the tool is successful, present the weather report clearly.",
+                "If the tool is successful, present the weather report clearly."
+                "U can only check the weather in Cuba. if the user ask for another country, Say that u can only check the weather in Cuba."
+                "if the user ask for -Habana- or -La Habana- pass to the function -Habana-",
     tools=[get_weather], # Pass the function directly
 )
 
+print(get_weather("La Habana"))
 
 
 

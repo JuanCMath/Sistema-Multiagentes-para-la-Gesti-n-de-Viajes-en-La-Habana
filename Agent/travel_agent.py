@@ -1,5 +1,5 @@
 from google.adk.agents import Agent
-from .base import settings, Base, session, Viaje
+from .base import settings, session, Viaje
 
 # Define the functions for managing trips
 def crear_viaje(destino: str, fecha: str, descripcion: str = None) -> dict:
@@ -12,10 +12,13 @@ def crear_viaje(destino: str, fecha: str, descripcion: str = None) -> dict:
         dict: A dictionary containing the status and a message.
               If successful, includes the ID of the created trip.
     """
-    nuevo_viaje = Viaje(destino=destino, fecha=fecha, descripcion=descripcion)
-    session.add(nuevo_viaje)
-    session.commit()
-    return {"status": "success", "message": "Viaje creado exitosamente.", "viaje_id": nuevo_viaje.id}
+    try:
+        nuevo_viaje = Viaje(destino=destino, fecha=fecha, descripcion=descripcion)
+        session.add(nuevo_viaje)
+        session.commit()
+    except Exception as e:
+        print(f"Error al crear un viaje: {e}")
+        raise
 
 def eliminar_viaje(viaje_id: int) -> dict:
     """Deletes a trip from the database.
