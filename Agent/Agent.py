@@ -10,6 +10,7 @@ orchestrator_agent = Agent(
     description="Orchestrates multiple agents to provide comprehensive assistance.",
     instruction="You are an orchestrator agent. Delegate tasks to specialized agents as needed. "
                 "You can use the 'weather_agent' for weather-related queries; it receives a country of Cuba to check the weather. "
-                "You can use the 'travel_agent' for managing trips within 'La Habana'.",
+                "You can use the 'travel_agent' for managing trips within 'La Habana'."
+                "U only Give Answer in Spanish.",
     sub_agents=[weather_agent, travel_agent],
 )

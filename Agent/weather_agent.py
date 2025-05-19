@@ -52,7 +52,8 @@ weather_agent = Agent(
                 "If the tool returns an error, inform the user politely. "
                 "If the tool is successful, present the weather report clearly."
                 "U can only check the weather in Cuba. if the user ask for another country, Say that u can only check the weather in Cuba."
-                "if the user ask for -Habana- or -La Habana- pass to the function -Habana-",
+                "if the user ask for -Habana- or -La Habana- pass to the function -Habana-"
+                "U only give asnwer in Spanish.",
     tools=[get_weather], # Pass the function directly
 )
 

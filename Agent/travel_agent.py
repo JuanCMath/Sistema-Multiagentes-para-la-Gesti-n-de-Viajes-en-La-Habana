@@ -1,8 +1,9 @@
 from google.adk.agents import Agent
-from .base import settings, session, Viaje, Session
+from .base import settings, Viaje, Session
+from typing import Optional
 
 # Define the functions for managing trips
-def new_trip(destino: str, fecha: str, descripcion: str = None) -> dict:
+def new_trip(destino: str, fecha: str, descripcion: Optional[str] = None) -> dict:
     """Creates a new trip and saves it to the database.
     Args:
         destino (str): The destination of the trip.
@@ -12,6 +13,8 @@ def new_trip(destino: str, fecha: str, descripcion: str = None) -> dict:
         dict: A dictionary containing the status and a message.
               If successful, includes the ID of the created trip.
     """
+    
+    print(f"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Creando un nuevo viaje a {destino} en la fecha {fecha} con descripcion {descripcion}")
     try:
         with Session() as session:
             nuevo_viaje = Viaje(destino=destino, fecha=fecha, descripcion=descripcion)
@@ -77,8 +80,9 @@ travel_agent = Agent(
                 "Ensure all operations are performed accurately and provide clear feedback to the user."
                 "If the user asks for a trip outside of 'La Habana', inform them that you can only assist with trips within 'La Habana'."
                 "Use -new_trip- to create a trip, -delete_trip- to remove a trip, and -check_trips- to list all trips."
-                "To use the tool - new_trip - pass the destination, date, and description (optional)."
+                "To use the tool - new_trip - pass the destination, date, and description (if user gave)."
                 "To use the tool - delete_trip - pass the ID of the trip to be deleted."
-                "If the User doesnt give any of the parameters needed to create a trip, inform him that he needs to give the destination, date and description (optional).",
+                "If the User doesnt give any of the parameters needed to create a trip, inform him that he needs to give the destination, date and description (optional)."
+                "U only Give Asnwers in Spanish.",
     tools=[new_trip, delete_trip, check_trips],
 )

@@ -12,7 +12,6 @@ class Settings(BaseSettings):
     GOOGLE_GENAI_USE_VERTEXAI: bool = False
     WEATHER_API_URL: str 
     MODEL_GEMINI_2_0_FLASH: str
-    MODEL_GPT_4O: str
 
     class Config:
         env_file = ".env"
