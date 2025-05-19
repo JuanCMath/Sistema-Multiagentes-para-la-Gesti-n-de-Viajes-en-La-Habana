@@ -16,8 +16,6 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = ".env"
-        
-
 
 try:
     settings = Settings()
@@ -30,7 +28,6 @@ except ValidationError as e:
 Base = declarative_base()
 engine = create_engine("sqlite:///viajes.db")
 Session = sessionmaker(bind=engine)
-session = Session()
 
 class Viaje(Base):
     __tablename__ = "viajes"
@@ -38,8 +35,3 @@ class Viaje(Base):
     destino = Column(String, nullable=False)
     fecha = Column(String, nullable=False)
     descripcion = Column(String, nullable=True)
-
-
-from pprint import pprint
-
-pprint(vars(settings))
