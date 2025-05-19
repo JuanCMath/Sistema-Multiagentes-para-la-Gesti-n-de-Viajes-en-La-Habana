@@ -15,7 +15,7 @@ def get_weather(city: str, country_code='CU') -> dict:
               If 'success', includes a 'report' key with weather details.
               If 'error', includes an 'error_message' key.
     """
-    print(f"--- Tool: get_weather called for city: {city} ---") # Log tool execution
+
     location = city.lower().replace(" ", "") # Basic normalization
 
     if country_code:
@@ -52,8 +52,6 @@ weather_agent = Agent(
                 "If the tool is successful, present the weather report clearly.",
     tools=[get_weather], # Pass the function directly
 )
-
-print(f"Agent '{weather_agent.name}' created using model '{settings.MODEL_GEMINI_2_0_FLASH}'.")
 
 
 

@@ -62,5 +62,3 @@ travel_agent = Agent(
                 "Ensure all operations are performed accurately and provide clear feedback to the user.",
     tools=[crear_viaje, eliminar_viaje, verificar_viajes],
 )
-
-print(f"Agent '{travel_agent.name}' created using model '{settings.MODEL_GEMINI_2_0_FLASH}'.")
