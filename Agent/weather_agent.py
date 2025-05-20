@@ -24,7 +24,7 @@ def get_weather(city: str) -> dict:
     params = {
         "key": settings.WEATHER_API_KEY,
         "q": location,
-        "lang": "es"  # Para respuesta en español
+        "lang": "en"  # Para respuesta en ingles
     }
     response = requests.get(settings.WEATHER_API_URL, params=params)
     if response.status_code == 200:
@@ -56,8 +56,3 @@ weather_agent = Agent(
                 "U only give asnwer in Spanish.",
     tools=[get_weather], # Pass the function directly
 )
-
-print(get_weather("La Habana"))
-
-
-
