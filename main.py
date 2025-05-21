@@ -8,7 +8,7 @@ from typing import Optional
 
 from google.adk.sessions import InMemorySessionService
 from google.adk.runners import Runner
-from google.genai import types
+from google.genai import types, Client
 
 from Agent.Agent import orchestrator_agent
 
@@ -62,13 +62,14 @@ async def delete_session(req: SessionRequest):
         logger.exception("Error eliminando sesión")
         raise HTTPException(status_code=500, detail=str(e))
 
-
-async def process_agent_query(runner: Runner, req: QueryRequest):
+@app.post("/agent/orquestator")
+async def call_orquestator_async(req: QueryRequest):
     try:
         content = types.Content(role="user", parts=[types.Part(text=req.query)])
         final_response_text = None
 
-        async for event in runner.run_async(
+        print("Ejecutando consulta al agente...!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        async for event in runner_orchestrator.run_async(
             user_id=req.user_id,
             session_id=req.session_id,
             new_message=content
@@ -85,7 +86,3 @@ async def process_agent_query(runner: Runner, req: QueryRequest):
     except Exception as e:
         logger.exception("Error procesando consulta al agente")
         raise HTTPException(status_code=500, detail=str(e))
-
-@app.post("/agent/orquestator")
-async def interact_with_orquestator(req: QueryRequest):
-    return await process_agent_query(runner_orchestrator, req)

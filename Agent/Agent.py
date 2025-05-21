@@ -3,6 +3,7 @@ from .base import settings
 from .travel_agent import travel_agent
 from .weather_agent import weather_agent
 
+
 def recomend_trip():
     """Recomend (or no) a trip within the Habana Based on the weather conditions
 
