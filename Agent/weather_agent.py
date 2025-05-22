@@ -2,7 +2,7 @@ import requests
 from google.adk.agents import Agent
 from .base import settings
 
-# @title Define the get_weather Tool
+
 async def get_weather(city: str) -> dict:
     """Retrieves the current weather report for a specified city.
 

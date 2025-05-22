@@ -1,17 +1,17 @@
 import os
+import uuid
 import logging
-from fastapi import FastAPI, HTTPException
+import warnings
+from fastapi import FastAPI, HTTPException, Query
+from typing import List, Optional
 
 from google.adk.sessions import InMemorySessionService
 from google.adk.runners import Runner
 from google.genai import types
 
 from Agent.Agent import orchestrator_agent
-from fastapi import FastAPI, HTTPException
-from typing import List
 from Agent.base import settings, Session, Viaje, ViajeCreate, ViajeRead, Conversacion, QueryRequest, ViajeUpdate
 
-import warnings
 # Ignore all warnings
 warnings.filterwarnings("ignore")
 
@@ -26,63 +26,40 @@ os.environ['GOOGLE_API_KEY'] = settings.GOOGLE_API_KEY
 # Servicio de sesiones en memoria
 session_service = InMemorySessionService()
 
-
 APP_NAME = "viajes_habana_app"
 ADMIN_USER_ID = "admin"
-ADMIN_SESSION_ID = "admin_session"
-
-# Crear sesión fija de admin
-session_service.create_session(
-    app_name=APP_NAME,
-    user_id=ADMIN_USER_ID,
-    session_id=ADMIN_SESSION_ID
-)
 
 # Inicializa runner del orquestador
 runner_orchestrator = Runner(agent=orchestrator_agent, app_name=APP_NAME, session_service=session_service)
 
-# Modelo para la consulta
+
+# Endpoint para inicializar una nueva sesión
+@app.post("/init_session")
+def init_session():
+    session_id = str(uuid.uuid4())
+    session_service.create_session(app_name=APP_NAME, user_id=ADMIN_USER_ID, session_id=session_id)
+    return {"session_id": session_id}
 
 
-# Endpoint principal
+# Endpoint principal del agente
 @app.post("/agent/orquestator")
-async def call_orquestator_async(req: QueryRequest):
+async def call_orquestator_async(req: QueryRequest, session_id: Optional[str] = Query(default=None)):
     try:
-        # Recuperar historial de la sesión/usuario
-        with Session() as session:
-            historial = (
-                session.query(Conversacion)
-                .filter_by(user_id=ADMIN_USER_ID)
-                .order_by(Conversacion.timestamp.asc())
-                .limit(5)
-                .all()
-            )
+        if session_id is None:
+            session_id = "default_session"
+            session_service.create_session(app_name=APP_NAME, user_id=ADMIN_USER_ID, session_id=session_id)
 
-        # Crear historial como texto plano
-        historial_texto = ""
-        for turno in historial:
-            historial_texto += f"Usuario: {turno.pregunta}\n"
-            historial_texto += f"Agente: {turno.respuesta}\n"
+        logger.info(f"Ejecutando consulta al agente en la sesion: {session_id}")
 
-        # Añadir la pregunta actual
-        historial_texto += f"Usuario: {req.query}"
-
-        # Crear el contenido válido como types.Content
-        content = types.Content(
-            role="user",
-            parts=[types.Part(text=historial_texto)]
-        )
+        content = types.Content(role="user", parts=[types.Part(text=req.query)])
 
         final_response_text = None
-        logger.info("Ejecutando consulta al agente...")
 
-        # Ejecutar el agente con el contexto combinado
         async for event in runner_orchestrator.run_async(
             user_id=ADMIN_USER_ID,
-            session_id=ADMIN_SESSION_ID,
+            session_id=session_id,
             new_message=content
         ):
-            
             if event.is_final_response() and event.content and event.content.parts:
                 final_response_text = event.content.parts[0].text
                 break
@@ -90,23 +67,14 @@ async def call_orquestator_async(req: QueryRequest):
         if final_response_text is None:
             raise ValueError("No se recibió respuesta final del agente.")
 
-        # Guardar conversación en la base de datos
-        with Session() as session:
-            nueva_conv = Conversacion(
-                user_id=ADMIN_USER_ID,
-                pregunta=req.query,
-                respuesta=final_response_text
-            )
-            session.add(nueva_conv)
-            session.commit()
-
-        return {"response": final_response_text}
+        return {"response": final_response_text, "session_id": session_id}
 
     except Exception as e:
         logger.exception("Error procesando consulta al agente")
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# CRUD para Viajes
 @app.post("/viajes/", response_model=ViajeRead)
 def crear_viaje(viaje: ViajeCreate):
     with Session() as session:
@@ -141,20 +109,6 @@ def eliminar_viaje(viaje_id: int):
         return {"status": "success", "message": "Viaje eliminado exitosamente."}
 
 
-@app.delete("/conversaciones/")
-def eliminar_todas_conversaciones():
-    try:
-        with Session() as session:
-            deleted_count = session.query(Conversacion).delete()
-            session.commit()
-            return {
-                "status": "success",
-                "message": f"Se eliminaron {deleted_count} conversaciones del historial."
-            }
-    except Exception as e:
-        logger.exception("Error al eliminar las conversaciones")
-        raise HTTPException(status_code=500, detail=str(e))
-
 @app.put("/viajes/{viaje_id}", response_model=ViajeRead)
 def actualizar_viaje(viaje_id: int, viaje_data: ViajeUpdate):
     with Session() as session:
@@ -162,7 +116,6 @@ def actualizar_viaje(viaje_id: int, viaje_data: ViajeUpdate):
         if not viaje:
             raise HTTPException(status_code=404, detail="Viaje no encontrado")
 
-        # Actualizar solo los campos enviados
         for field, value in viaje_data.dict(exclude_unset=True).items():
             setattr(viaje, field, value)
 
