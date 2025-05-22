@@ -9,7 +9,7 @@ Sistema multiagentes utilizando [Google ADK (Agent Development Kit)](https://git
 - **Sistema Operativo:** Windows, Linux (recomendado Linux)
 - **Lenguaje:** Python 3.10 o superior
 - **Dependencias:** Listadas en `requirements.txt` (ver abajo)
-- **API Key:** Necesitas una clave de API de Google para usar Google Generative AI
+- **API Key:** Necesitas una clave de API de Google para usar Google Generative AI [Obtener API KEY](https://aistudio.google.com/app/apikey)
 
 ## Instalación
 
@@ -18,11 +18,11 @@ Sistema multiagentes utilizando [Google ADK (Agent Development Kit)](https://git
    git clone https://github.com/JuanCMath/Sistema-Multiagentes-para-la-Gesti-n-de-Viajes-en-La-Habana.git
    cd Sistema-Multiagentes-para-la-Gesti-n-de-Viajes-en-La-Habana
    ```
-2. **Selecciona la rama principal (main o master):**
+2. **Selecciona la rama main:**
    ```bash
    git checkout main
    ```
-3. **Crea un entorno virtual (opcional pero recomendado):**
+3. **Crea un entorno virtual:**
    ```bash
    python -m venv venv
    source venv/bin/activate  # En Windows: venv\Scripts\activate
@@ -34,7 +34,7 @@ Sistema multiagentes utilizando [Google ADK (Agent Development Kit)](https://git
 5. **Configura variables de entorno:**
    - Crea un archivo `.env` con tu clave de API de Google:
      ```
-     GOOGLE_API_KEY=tu_clave_aqui
+     GOOGLE_API_KEY= tu_clave_aqui
      ```
 
 ## Ejecución
@@ -45,7 +45,7 @@ Para iniciar el servidor:
 uvicorn main:app --reload
 ```
 
-- El sistema levantará una API RESTful en `http://localhost:8000/`.
+- El sistema levantará una API RESTful en `http://localhost:8000/docs#/default`.
 
 ## Uso
 
