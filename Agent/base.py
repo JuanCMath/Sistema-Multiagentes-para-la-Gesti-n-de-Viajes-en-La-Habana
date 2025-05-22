@@ -6,6 +6,22 @@ from pydantic_settings import BaseSettings
 from typing import Optional
 from sqlalchemy import DateTime, Text
 from datetime import datetime
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, Text, inspect
+from sqlalchemy.orm import declarative_base, sessionmaker
+
+Base = declarative_base()
+engine = create_engine("sqlite:///data/viajes.db")
+Session = sessionmaker(bind=engine)
+
+def init_db():
+    inspector = inspect(engine)
+    tablas_esperadas = {"viajes"}
+    tablas_existentes = set(inspector.get_table_names())
+    if not tablas_esperadas.issubset(tablas_existentes):
+        print("Inicializando base de datos...")
+        Base.metadata.create_all(engine)
+    else:
+        print("Base de datos ya inicializada.")
 
 
 class Settings(BaseSettings):
@@ -72,3 +88,6 @@ class ViajeUpdate(BaseModel):
     destino: Optional[str] = None
     fecha: Optional[str] = None
     descripcion: Optional[str] = None
+    
+    
+init_db()

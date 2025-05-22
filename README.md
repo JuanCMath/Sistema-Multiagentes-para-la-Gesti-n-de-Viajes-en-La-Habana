@@ -91,7 +91,6 @@ uvicorn main:app --reload
 - [SQLModel](https://sqlmodel.tiangolo.com/)
 - [Google Generative AI](https://github.com/google/generative-ai-python)
 - [Google ADK](https://github.com/google/adk)
-- [Alembic](https://alembic.sqlalchemy.org/)
 
 Todas las dependencias están en `requirements.txt`.
 
