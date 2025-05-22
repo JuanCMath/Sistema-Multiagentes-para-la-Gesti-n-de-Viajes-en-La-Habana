@@ -1,8 +1,9 @@
 from sqlalchemy import create_engine, Column, Integer, String, Table, MetaData
 from sqlalchemy.orm import declarative_base, sessionmaker
-from pydantic import ValidationError
+from pydantic import ValidationError, BaseModel
 from google.adk.agents import Agent
-from pydantic_settings import BaseSettings 
+from pydantic_settings import BaseSettings
+from typing import Optional
 
 
 class Settings(BaseSettings):
@@ -34,3 +35,18 @@ class Viaje(Base):
     destino = Column(String, nullable=False)
     fecha = Column(String, nullable=False)
     descripcion = Column(String, nullable=True)
+    
+    
+class ViajeCreate(BaseModel):
+    destino: str
+    fecha: str
+    descripcion: Optional[str] = None
+
+class ViajeRead(BaseModel):
+    id: int
+    destino: str
+    fecha: str
+    descripcion: Optional[str] = None
+
+    class Config:
+        orm_mode = True
