@@ -4,6 +4,8 @@ from pydantic import ValidationError, BaseModel
 from google.adk.agents import Agent
 from pydantic_settings import BaseSettings
 from typing import Optional
+from sqlalchemy import DateTime, Text
+from datetime import datetime
 
 
 class Settings(BaseSettings):
@@ -29,6 +31,11 @@ Base = declarative_base()
 engine = create_engine("sqlite:///viajes.db")
 Session = sessionmaker(bind=engine)
 
+
+class QueryRequest(BaseModel):
+    query: str
+    
+
 class Viaje(Base):
     __tablename__ = "viajes"
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -50,3 +57,12 @@ class ViajeRead(BaseModel):
 
     class Config:
         orm_mode = True
+        
+        
+class Conversacion(Base):
+    __tablename__ = "conversaciones"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    timestamp = Column(DateTime, default=datetime.utcnow)
+    user_id = Column(String, nullable=False)
+    pregunta = Column(Text, nullable=False)
+    respuesta = Column(Text, nullable=False)

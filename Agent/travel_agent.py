@@ -3,7 +3,7 @@ from .base import settings, Viaje, Session
 from typing import Optional
 
 # Define the functions for managing trips
-def new_trip(destino: str, fecha: str, descripcion: Optional[str] = None) -> dict:
+async def new_trip(destino: str, fecha: str, descripcion: Optional[str] = None) -> dict:
     """Creates a new trip and saves it to the database.
     Args:
         destino (str): The destination of the trip.
@@ -24,7 +24,7 @@ def new_trip(destino: str, fecha: str, descripcion: Optional[str] = None) -> dic
         print(f"Error al crear un viaje: {e}")
         return {"status": "error", "message": str(e)}
 
-def delete_trip(viaje_id: int) -> dict:
+async def delete_trip(viaje_id: int) -> dict:
     """Deletes a trip from the database.
     
     Args:
@@ -48,7 +48,7 @@ def delete_trip(viaje_id: int) -> dict:
         print(f"Error al eliminar el viaje: {e}")
         return {"status": "error", "message": str(e)}
 
-def check_trips() -> dict:
+async def check_trips() -> dict:
     """Retrieves all trips from the database.
     
     Returns:

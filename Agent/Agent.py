@@ -4,7 +4,7 @@ from .travel_agent import travel_agent
 from .weather_agent import weather_agent
 
 
-def recomend_trip():
+async def recomend_trip():
     """Recomend (or no) a trip within the Habana Based on the weather conditions
 
     Args:
@@ -13,7 +13,7 @@ def recomend_trip():
         str : Rocomended or no
     """
     # Paso 1: Consultar clima
-    reporte_clima = weather_agent.tools[0]("Habana")
+    reporte_clima = await weather_agent.tools[0]("Habana")
     condicion = reporte_clima.get('condicion', '').lower()
     # Puedes personalizar las condiciones 'malas'
     condiciones_buenas = ['sunny', 'clear', 'partly cloudy', 'mostly sunny']
