@@ -1,9 +1,6 @@
-import bootstrap
-
 import os
 import logging
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
 
 from google.adk.sessions import InMemorySessionService
 from google.adk.runners import Runner
@@ -11,7 +8,6 @@ from google.genai import types
 
 from Agent.Agent import orchestrator_agent
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
 from typing import List
 from Agent.base import settings, Session, Viaje, ViajeCreate, ViajeRead, Conversacion, QueryRequest, ViajeUpdate
 

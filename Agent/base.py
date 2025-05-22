@@ -29,7 +29,7 @@ except ValidationError as e:
 
 # SQLAlchemy setup
 Base = declarative_base()
-engine = create_engine("sqlite:///viajes.db")
+engine = create_engine("sqlite:///data/viajes.db")
 Session = sessionmaker(bind=engine)
 
 
