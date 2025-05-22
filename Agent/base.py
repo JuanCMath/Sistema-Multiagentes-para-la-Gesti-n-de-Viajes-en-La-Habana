@@ -16,6 +16,7 @@ class Settings(BaseSettings):
     WEATHER_API_URL: str 
     MODEL_GEMINI_2_0_FLASH: str
 
+    
     class Config:
         env_file = ".env"
 
@@ -66,3 +67,8 @@ class Conversacion(Base):
     user_id = Column(String, nullable=False)
     pregunta = Column(Text, nullable=False)
     respuesta = Column(Text, nullable=False)
+    
+class ViajeUpdate(BaseModel):
+    destino: Optional[str] = None
+    fecha: Optional[str] = None
+    descripcion: Optional[str] = None

@@ -13,7 +13,7 @@ from Agent.Agent import orchestrator_agent
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List
-from Agent.base import settings, Session, Viaje, ViajeCreate, ViajeRead, Conversacion, QueryRequest
+from Agent.base import settings, Session, Viaje, ViajeCreate, ViajeRead, Conversacion, QueryRequest, ViajeUpdate
 
 import warnings
 # Ignore all warnings
@@ -159,11 +159,17 @@ def eliminar_todas_conversaciones():
         logger.exception("Error al eliminar las conversaciones")
         raise HTTPException(status_code=500, detail=str(e))
 
-test = QueryRequest(query="¿Cuál es el clima en La Habana?")
+@app.put("/viajes/{viaje_id}", response_model=ViajeRead)
+def actualizar_viaje(viaje_id: int, viaje_data: ViajeUpdate):
+    with Session() as session:
+        viaje = session.query(Viaje).filter_by(id=viaje_id).first()
+        if not viaje:
+            raise HTTPException(status_code=404, detail="Viaje no encontrado")
 
-import asyncio
-if __name__ == "__main__":
-        try:
-            asyncio.run(call_orquestator_async(test))
-        except Exception as e:
-            print(f"An error occurred: {e}")
+        # Actualizar solo los campos enviados
+        for field, value in viaje_data.dict(exclude_unset=True).items():
+            setattr(viaje, field, value)
+
+        session.commit()
+        session.refresh(viaje)
+        return viaje
