@@ -81,6 +81,9 @@ uvicorn main:app --reload
 - `DELETE /conversaciones/`
   - Elimina todo el historial de conversaciones.
 
+- `DELETE /init_session`
+  - Crea una sesion 
+
 ### Ejemplo de flujo de uso
 
 1. Levanta el servidor.

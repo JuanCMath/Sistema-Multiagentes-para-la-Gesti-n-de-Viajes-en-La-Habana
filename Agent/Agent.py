@@ -2,6 +2,7 @@ from google.adk import Agent
 from .base import settings
 from .travel_agent import travel_agent
 from .weather_agent import weather_agent
+from google.adk.tools import load_memory
 
 
 async def recomend_trip():
@@ -19,7 +20,7 @@ async def recomend_trip():
     condiciones_buenas = ['sunny', 'clear', 'partly cloudy', 'mostly sunny']
 
     # Paso 2: Decidir si recomendar
-    if not any(c.lower in condicion for c in condiciones_buenas):
+    if not any(c.lower() in condicion for c in condiciones_buenas):
         return f"No se recomienda viajar en La Habana en el dia de hoy debido a las condiciones climáticas: {condicion}."
     else:
         return f"¡El clima es adecuado! Se recomienda viajar en La Habana"
@@ -34,7 +35,8 @@ orchestrator_agent = Agent(
                 "You can use the 'weather_agent' for weather-related queries; it receives a country of Cuba to check the weather. "
                 "You can use the 'travel_agent' for managing trips within 'La Habana'."
                 "Before u create a trip, use ur tool -recomend_trip- and give the returned information from tool to the user"
+                "Answer the user's question. Use the 'load_memory' tool if the answer might be in past conversations."
                 "U only Give Answer in Spanish.",
-    tools=[recomend_trip],
+    tools=[recomend_trip, load_memory],
     sub_agents=[weather_agent, travel_agent],
 )
