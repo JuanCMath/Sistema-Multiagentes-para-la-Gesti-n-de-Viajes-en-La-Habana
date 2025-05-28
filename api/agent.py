@@ -1,35 +1,31 @@
-from fastapi import APIRouter, HTTPException, Query
-from typing import Optional
+from fastapi import APIRouter, HTTPException
 from google.adk.runners import Runner
 from google.genai import types
 from agents.orquestator import orchestrator_agent
 from data.schemas import QueryRequest
-from core.session import session_service
+from core.session import session_service, memory_service
+from core.config import settings
 
 router = APIRouter()
-
-APP_NAME = "viajes_habana_app"
-ADMIN_USER_ID = "admin"
 
 # Inicializa runner del orquestador (si no está inicializado globalmente)
 runner_orchestrator = Runner(
     agent=orchestrator_agent,
-    app_name=APP_NAME,
+    app_name=settings.APP_NAME,
     session_service= session_service
 )
 
 @router.post("/orquestator")
-async def call_orquestator_async(req: QueryRequest, session_id: Optional[str] = Query(default=None)):
+async def call_orquestator_async(req: QueryRequest):
     try:
-        if session_id is None:
-            session_id = "default_session"
-            await session_service.create_session(app_name=APP_NAME, user_id=ADMIN_USER_ID, session_id=session_id)
+        session_id = "default_session"
+        await session_service.create_session(app_name=settings.APP_NAME, user_id=settings.ADMIN_USER_ID, session_id=session_id)
 
         content = types.Content(role="user", parts=[types.Part(text=req.query)])
         final_response_text = None
 
         async for event in runner_orchestrator.run_async(
-            user_id=ADMIN_USER_ID,
+            user_id=settings.ADMIN_USER_ID,
             session_id=session_id,
             new_message=content
         ):
@@ -39,6 +35,14 @@ async def call_orquestator_async(req: QueryRequest, session_id: Optional[str] = 
 
         if final_response_text is None:
             raise ValueError("No se recibió respuesta final del agente.")
+
+        session = await runner_orchestrator.session_service.get_session(
+            app_name=settings.APP_NAME,
+            user_id=settings.ADMIN_USER_ID,
+            session_id=session_id
+        )
+
+        await memory_service.add_session_to_memory(session)
 
         return {"response": final_response_text, "session_id": session_id}
 

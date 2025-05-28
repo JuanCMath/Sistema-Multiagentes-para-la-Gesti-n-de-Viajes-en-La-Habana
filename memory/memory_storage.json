@@ -1,0 +1,18 @@
+[
+  {
+    "author": "user",
+    "content": [
+      "Me llamo Pepe"
+    ],
+    "timestamp": "2025-05-28T18:25:10.821129",
+    "event_type": null
+  },
+  {
+    "author": "orchestrator_agent_v1",
+    "content": [
+      "¡Hola, Pepe! ¿En qué puedo ayudarte hoy?\n"
+    ],
+    "timestamp": "2025-05-28T18:25:10.821553",
+    "event_type": null
+  }
+]
