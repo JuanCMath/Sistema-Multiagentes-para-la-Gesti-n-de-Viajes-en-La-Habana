@@ -72,13 +72,13 @@ class ViajeRead(BaseModel):
     descripcion: Optional[str] = None
 
     class Config:
-        orm_mode = True
+        from_atributes = True
         
         
 class Conversacion(Base):
     __tablename__ = "conversaciones"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    timestamp = Column(DateTime, default=datetime.utcnow)
+    timestamp = Column(DateTime, default=lambda: datetime.now(datetime.timezone.utc))
     user_id = Column(String, nullable=False)
     pregunta = Column(Text, nullable=False)
     respuesta = Column(Text, nullable=False)

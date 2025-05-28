@@ -29,14 +29,28 @@ session_service = InMemorySessionService()
 memory_service = InMemoryMemoryService()
 
 
-session_service.create_session(
-    app_name="viajes_habana_app",
-    user_id="admin",
-    session_id="default_session"
-)
 
 APP_NAME = "viajes_habana_app"
 ADMIN_USER_ID = "admin"
+
+
+async def startup():
+    await session_service.create_session(
+        app_name="viajes_habana_app",
+        user_id="admin",
+        session_id="default_session"
+    )
+
+
+@app.on_event("startup")
+async def startup():
+    await session_service.create_session(
+        app_name=APP_NAME,
+        user_id=ADMIN_USER_ID,
+        session_id='default_session'
+    )
+    
+
 
 # Inicializa runner del orquestador
 runner_orchestrator = Runner(agent=orchestrator_agent, app_name=APP_NAME, session_service=session_service, memory_service=memory_service)
@@ -56,8 +70,8 @@ async def call_orquestator_async(req: QueryRequest, session_id: Optional[str] = 
     try:
         if session_id is None:
             session_id = "default_session"
-            # Asegurarse de usar await solo si create_session es async (en este caso lo es)
-            session_service.create_session(app_name=APP_NAME, user_id=ADMIN_USER_ID, session_id=session_id)
+            await session_service.create_session(app_name=APP_NAME, user_id=ADMIN_USER_ID, session_id=session_id)
+
 
         logger.info(f"Ejecutando consulta al agente en la sesion: {session_id}")
 
@@ -83,8 +97,8 @@ async def call_orquestator_async(req: QueryRequest, session_id: Optional[str] = 
             user_id=ADMIN_USER_ID,
             session_id=session_id
         )
-        # Guardar en memoria (esta sí es async)
-        await memory_service.add_session_to_memory(completed_session)
+        session = await completed_session
+        await memory_service.add_session_to_memory(session)
 
         return {"response": final_response_text, "session_id": session_id}
 
