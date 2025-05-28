@@ -24,14 +24,14 @@ Sistema multiagentes utilizando [Google ADK (Agent Development Kit)](https://git
    ```bash
    git checkout main
    ```
-3. **Crea un entorno virtual:**
+3. **Crea un entorno virtual, utilizando el gestor de paquetes uv:**
    ```bash
-   python -m venv venv
-   source venv/bin/activate  # En Windows: venv\Scripts\activate
+   uv venv .venv
+   source venv/bin/activate  # En Windows: .venv\Scripts\activate
    ```
 4. **Instala las dependencias:**
    ```bash
-   pip install -r requirements.txt
+   uv pip install -r requirements.txt
    ```
 5. **Configura variables de entorno:**
    - Crea un archivo `.env` con tu clave de API de Google y de WeatherAPI:
@@ -78,11 +78,8 @@ uvicorn main:app --reload
 - `DELETE /viajes/{viaje_id}`
   - Elimina un viaje.
 
-- `DELETE /conversaciones/`
-  - Elimina todo el historial de conversaciones.
-
-- `DELETE /init_session`
-  - Crea una sesion 
+- `DELETE /memory/reset-memory`
+  - Elimina todo el historial de conversaciones
 
 ### Ejemplo de flujo de uso
 
@@ -105,7 +102,3 @@ Todas las dependencias están en `requirements.txt`.
 - **Agente Orquestador:** Responde preguntas del usuario y coordina la gestión de viajes.
 - **Gestión de Viajes:** CRUD de viajes (crear, listar, actualizar, eliminar).
 - **Historial de Conversaciones:** Registra y permite limpiar las conversaciones con el agente.
-
-## Imágenes y ejemplos visuales
-
----por agregar----

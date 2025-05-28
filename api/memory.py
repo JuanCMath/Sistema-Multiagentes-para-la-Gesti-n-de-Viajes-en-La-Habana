@@ -5,7 +5,7 @@ router = APIRouter()
 
 MEMORY_FILE_PATH = "memory/memory_storage.json"
 
-@router.post("/reset-memory")
+@router.delete("/reset-memory")
 def reset_memory():
     try:
         # Sobrescribe el archivo con un diccionario vacío

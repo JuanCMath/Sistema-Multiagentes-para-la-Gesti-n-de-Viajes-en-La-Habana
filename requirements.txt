@@ -7,4 +7,3 @@ python-dotenv>=1.0.0
 dotenv>=0.9.9
 google-adk>=0.1.0
 litellm>=0.1.0
-google-adk[vertexai]>=0.1.0
