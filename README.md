@@ -10,8 +10,8 @@ Sistema multiagentes utilizando [Google ADK (Agent Development Kit)](https://git
 - **Lenguaje:** Python 3.10 o superior
 - **Dependencias:** Listadas en `requirements.txt` (ver abajo)
 - **API Keys:** 
-        -Necesitas una clave de API de Google para usar Google Generative AI [Obtener API KEY](https://aistudio.google.com/app/apikey)
-        -Necesitas una clave de API de WeatherAPI [Obtener API KEY](https://www.weatherapi.com/)
+  - Necesitas una clave de API de Google para usar Google Generative AI [Obtener API KEY](https://aistudio.google.com/app/apikey)
+  - Necesitas una clave de API de WeatherAPI [Obtener API KEY](https://www.weatherapi.com/)
 
 ## Instalación
 
