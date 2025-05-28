@@ -2,17 +2,33 @@
   {
     "author": "user",
     "content": [
-      "Me llamo Pepe"
+      "como me llamo?"
     ],
-    "timestamp": "2025-05-28T18:25:10.821129",
+    "timestamp": "2025-05-28T18:33:50.525963",
     "event_type": null
   },
   {
     "author": "orchestrator_agent_v1",
     "content": [
-      "¡Hola, Pepe! ¿En qué puedo ayudarte hoy?\n"
+      null
     ],
-    "timestamp": "2025-05-28T18:25:10.821553",
+    "timestamp": "2025-05-28T18:33:50.526301",
+    "event_type": null
+  },
+  {
+    "author": "orchestrator_agent_v1",
+    "content": [
+      null
+    ],
+    "timestamp": "2025-05-28T18:33:51.950587",
+    "event_type": null
+  },
+  {
+    "author": "orchestrator_agent_v1",
+    "content": [
+      "Te llamas Pepe.\n"
+    ],
+    "timestamp": "2025-05-28T18:33:51.954182",
     "event_type": null
   }
 ]

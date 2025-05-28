@@ -33,8 +33,8 @@ async def load_memory():
         str : Memory loaded
     """
     # Cargar la memoria del agente
-    memory = memory_service._load_memory
-    return memory
+    memory = memory_service._load_memory()
+    return {"memoria": memory}
     
 # Create an Orchestrator Agent
 orchestrator_agent = Agent(
