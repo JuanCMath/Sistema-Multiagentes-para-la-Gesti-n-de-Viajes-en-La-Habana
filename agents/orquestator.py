@@ -1,5 +1,5 @@
 from google.adk import Agent
-from .base import settings
+from core.config import settings
 from .travel_agent import travel_agent
 from .weather_agent import weather_agent
 from google.adk.tools import load_memory

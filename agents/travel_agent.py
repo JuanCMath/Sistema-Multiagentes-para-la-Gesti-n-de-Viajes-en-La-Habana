@@ -1,5 +1,6 @@
 from google.adk.agents import Agent
-from .base import settings, Viaje, Session
+from core.config import settings
+from data.models import  Viaje, Session
 from typing import Optional
 
 # Define the functions for managing trips

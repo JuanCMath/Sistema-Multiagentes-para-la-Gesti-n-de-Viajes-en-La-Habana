@@ -1,6 +1,6 @@
 import requests
 from google.adk.agents import Agent
-from .base import settings
+from core.config import settings
 
 
 async def get_weather(city: str) -> dict:
