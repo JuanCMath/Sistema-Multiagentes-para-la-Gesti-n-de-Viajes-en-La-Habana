@@ -37,7 +37,7 @@ Sistema multiagentes utilizando [Google ADK (Agent Development Kit)](https://git
 
 5. **Instala las dependencias:**
   ```bash
-  uv pip install -e .
+  uv sync
   ```
 5. **Configura variables de entorno:**
    - Crea un archivo `.env` con tu clave de API de Google y de WeatherAPI:
