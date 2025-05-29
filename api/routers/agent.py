@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException
 from google.adk.runners import Runner
 from google.genai import types
-from agents.orquestator import orchestrator_agent
-from data.schemas import QueryRequest
+from agents.orquestator_agent import orchestrator_agent
+from domain.schemas import QueryRequest
 from core.session import session_service, memory_service
 from core.config import settings
 

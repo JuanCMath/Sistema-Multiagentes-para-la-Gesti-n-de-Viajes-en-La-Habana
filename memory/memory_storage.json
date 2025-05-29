@@ -2,9 +2,9 @@
   {
     "author": "user",
     "content": [
-      "como me llamo?"
+      "Esto me quedo tizaaaaaaaaa jejejejejejejeje"
     ],
-    "timestamp": "2025-05-28T18:33:50.525963",
+    "timestamp": "2025-05-28T21:20:54.117300",
     "event_type": null
   },
   {
@@ -12,7 +12,7 @@
     "content": [
       null
     ],
-    "timestamp": "2025-05-28T18:33:50.526301",
+    "timestamp": "2025-05-28T21:20:54.117719",
     "event_type": null
   },
   {
@@ -20,15 +20,15 @@
     "content": [
       null
     ],
-    "timestamp": "2025-05-28T18:33:51.950587",
+    "timestamp": "2025-05-28T21:20:55.418642",
     "event_type": null
   },
   {
     "author": "orchestrator_agent_v1",
     "content": [
-      "Te llamas Pepe.\n"
+      "No entiendo. ¿Podrías reformular tu pregunta?\n"
     ],
-    "timestamp": "2025-05-28T18:33:51.954182",
+    "timestamp": "2025-05-28T21:20:55.422632",
     "event_type": null
   }
 ]

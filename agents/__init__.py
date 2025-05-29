@@ -1,3 +1,3 @@
-from . import orquestator
+from . import orquestator_agent
 
-agent = orquestator.orchestrator_agent
+agent = orquestator_agent.orchestrator_agent

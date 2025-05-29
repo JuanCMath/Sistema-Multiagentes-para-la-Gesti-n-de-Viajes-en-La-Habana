@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from data.schemas import  ViajeCreate, ViajeRead, ViajeUpdate
-from data.models import Viaje, Session
+from domain.schemas import  ViajeCreate, ViajeRead, ViajeUpdate
+from domain.models import Viaje, Session
 from typing import List
 
 router = APIRouter()
