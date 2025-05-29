@@ -1,0 +1,31 @@
+[project]
+name = "sistema-multiagentes"
+version = "0.1.0"
+description = "Sistema multiagentes utilizando Google ADK para la gestión de viajes en La Habana, considerando condiciones climáticas."
+authors = [{ name = "JuanCMath" }]
+requires-python = ">=3.10"
+
+dependencies = [
+    "fastapi[standard]>=0.95.0",
+    "sqlmodel>=0.0.8",
+    "google-generativeai>=0.1.0",
+    "requests>=2.28.1",
+    "python-dotenv>=1.0.0",
+    "dotenv>=0.9.9",
+    "google-adk>=0.1.0",
+    "litellm>=0.1.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "httpx"
+]
+
+[tool.setuptools]
+packages = ["api", "core", "order", "agents", "domain", "memory", "database"]
+package-dir = {"" = "src"}  # <- IMPORTANTE
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"

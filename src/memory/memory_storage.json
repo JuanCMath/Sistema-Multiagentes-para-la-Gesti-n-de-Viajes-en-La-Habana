@@ -1,0 +1,18 @@
+[
+  {
+    "author": "user",
+    "content": [
+      "Hola"
+    ],
+    "timestamp": "2025-05-29T19:45:07.724076",
+    "event_type": null
+  },
+  {
+    "author": "orchestrator_agent_v1",
+    "content": [
+      "Hola! En qué puedo ayudarte hoy?\n"
+    ],
+    "timestamp": "2025-05-29T19:45:07.724718",
+    "event_type": null
+  }
+]
