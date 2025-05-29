@@ -24,15 +24,21 @@ Sistema multiagentes utilizando [Google ADK (Agent Development Kit)](https://git
    ```bash
    git checkout main
    ```
-3. **Crea un entorno virtual, utilizando el gestor de paquetes uv:**
-   ```bash
-   uv venv .venv
-   source venv/bin/activate  # En Windows: .venv\Scripts\activate
-   ```
-4. **Instala las dependencias:**
-   ```bash
-   uv pip install -r requirements.txt
-   ```
+3. **Instala `uv` si no lo tienes instalado:**
+  ```bash
+  pip install uv
+  ```
+
+4. **Crea un entorno virtual, utilizando el gestor de paquetes `uv`:**
+  ```bash
+  uv venv .venv
+  source venv/bin/activate  # En Windows: .venv\Scripts\activate
+  ```
+
+5. **Instala las dependencias:**
+  ```bash
+  uv pip install -e .
+  ```
 5. **Configura variables de entorno:**
    - Crea un archivo `.env` con tu clave de API de Google y de WeatherAPI:
      ```
